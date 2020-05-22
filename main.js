@@ -15,8 +15,30 @@ completed: true
 }
 ];
 LoadData();
+const setCookie =(key,value,year,month,day,path,sequre)=>{
+  let strCookie=key+"-"+value;
+  if(year){
+const data = new Date ( year, month, day);
+    strCookie=";"+"expires"+data.toGMTString();
+  }
+  strCookie+=path?";path="+path:"";
+  strCookie+=domain?";domain="+domain:"";
+  strCookie+=sequre?sequre:"";
+  document.cookie =strCookie
+}
+
+function get_cookie(cookie_name)
+{
+  let results = document.cookie.match ('(^|;) ?' + cookie_name + '=([^;]*)(;|$)');
+  if(results)
+    return (unescape(results[2]));
+  else
+    return null;
+}
+
 function SaveData(){
-    localStorage.setItem("objs", JSON.stringify(obj));
+    var expires = new Date();
+    set_cookie("objs", JSON.stringify(obj),expires.getFullYear(), expires.getMonth(), expires.getDay()+31);
 }
 function LoadData(){
     obj = JSON.parse(localStorage.getItem("objs"));
@@ -25,7 +47,7 @@ const render = () =>{
 SaveData();
 todoList.textContent="";
 todoCompleted.textContent="";
-if (obj===null)obj=[]
+if (obj===null)obj=[];
 obj.forEach((el) =>{
 const li = document.createElement("li");
 li.classList.add("todo-item");
@@ -67,7 +89,7 @@ ind = index;
 return ind;
 
 
-
+        
 }
 
 todoContainer.addEventListener("click", (event) =>{
@@ -86,6 +108,3 @@ if(target.matches(".todo-complete")){
 }
 render();});
 render();
-// if (target.matches('.todo-complete'))
-// let index = search(target.closest("li"));
-
