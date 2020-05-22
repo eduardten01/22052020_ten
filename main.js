@@ -15,8 +15,8 @@ completed: true
 }
 ];
 LoadData();
-const setCookie =(key,value,year,month,day,path,sequre)=>{
-  let strCookie=key+"-"+value;
+const setCookie =(key,value,year,month,day,path,domain,sequre)=>{
+  let strCookie=key+"="+value;
   if(year){
 const data = new Date ( year, month, day);
     strCookie=";"+"expires"+data.toGMTString();
@@ -24,7 +24,7 @@ const data = new Date ( year, month, day);
   strCookie+=path?";path="+path:"";
   strCookie+=domain?";domain="+domain:"";
   strCookie+=sequre?sequre:"";
-  document.cookie =strCookie
+  document.cookie =strCookie ;
 }
 
 function get_cookie(cookie_name)
@@ -38,10 +38,10 @@ function get_cookie(cookie_name)
 
 function SaveData(){
     var expires = new Date();
-    set_cookie("objs", JSON.stringify(obj),expires.getFullYear(), expires.getMonth(), expires.getDay()+31);
+    setCookie("objs", JSON.stringify(obj));
 }
 function LoadData(){
-    obj = JSON.parse(localStorage.getItem("objs"));
+    obj = JSON.parse(get_cookie("objs"));
 }
 const render = () =>{
 SaveData();
